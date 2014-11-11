@@ -7,7 +7,7 @@ Created on Mon Nov 10 17:16:57 2014
 
 import pandas as pd
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction import DictVectorizer
 
 # データを読み込む
@@ -26,9 +26,9 @@ x.loc[:, 4:9] = x.loc[:, 4:9].astype(str)
 
 # カテゴリカル変数を数量化
 x = DictVectorizer(sparse=False).fit_transform(x.to_dict('records'))
-
+    
 # SVCで最初の5000個を学習
-clf = DecisionTreeClassifier()
+clf = RandomForestClassifier(n_estimators=30)
 clf.fit(x[:5000], y[:5000])
 
 # 5000番目以降に対する学習スコア
