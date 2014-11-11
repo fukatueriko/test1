@@ -7,7 +7,7 @@ Created on Mon Nov 10 17:16:57 2014
 
 import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction import DictVectorizer
 
 # データを読み込む
@@ -28,8 +28,13 @@ x.loc[:, 4:9] = x.loc[:, 4:9].astype(str)
 x = DictVectorizer(sparse=False).fit_transform(x.to_dict('records'))
     
 # SVCで最初の5000個を学習
-clf = RandomForestClassifier(n_estimators=30)
-clf.fit(x[:5000], y[:5000])
-
-# 5000番目以降に対する学習スコア
-print clf.score(x[5000:], y[5000:])
+for p in ['l1', 'l2']:
+    for d in [True, False]:
+        if p == 'l1' and d == True:
+            continue
+        for c in [1,10,100,1000,10000]:
+            clf = LogisticRegression(penalty=p, dual=d, tol=0.0001, C=c, fit_intercept=True, intercept_scaling=1, class_weight=None, random_state=None)
+            clf.fit(x[:5000], y[:5000])
+            print (p,d,c)
+            # 5000番目以降に対する学習スコア
+            print clf.score(x[5000:], y[5000:])
