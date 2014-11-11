@@ -10,7 +10,9 @@ from matplotlib.pyplot import *
 from sklearn.svm import SVC
 
 x = random.uniform(0, 1, (100, 2))
-t = (x[:, 1] > x[:, 0]**2) | ((x[:, 0]-1)**2 + x[:, 1]**2 < 0.1)
+t = zeros(100)
+t[x[:, 1] > x[:, 0]] = 1
+t[(x[:, 0]-1)**2 + x[:, 1]**2 < 0.2] = 2
 
 clf = SVC(C=100)
 clf.fit(x, t)
