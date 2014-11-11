@@ -32,4 +32,5 @@ clf = SVC()
 clf.fit(x, y)
 
 # 学習スコア
-print clf.score(x, y)
+#print clf.score(x, y)
+print clf.predict(x[0:0])
