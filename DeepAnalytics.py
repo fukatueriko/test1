@@ -7,7 +7,7 @@ Created on Mon Nov 10 17:16:57 2014
 
 import pandas as pd
 import numpy as np
-from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.feature_extraction import DictVectorizer
 
 # データを読み込む
@@ -27,10 +27,9 @@ x.loc[:, 4:9] = x.loc[:, 4:9].astype(str)
 # カテゴリカル変数を数量化
 x = DictVectorizer(sparse=False).fit_transform(x.to_dict('records'))
 
-# SVCで学習
-clf = SVC()
-clf.fit(x, y)
+# SVCで最初の5000個を学習
+clf = DecisionTreeClassifier()
+clf.fit(x[:5000], y[:5000])
 
-# 学習スコア
-#print clf.score(x, y)
-print clf.predict(x[0:0])
+# 5000番目以降に対する学習スコア
+print clf.score(x[5000:], y[5000:])
