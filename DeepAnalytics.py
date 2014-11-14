@@ -5,9 +5,9 @@ Created on Mon Nov 10 17:16:57 2014
 @author: 
 """
 
-import pandas as pd
+import pandas as pdb
 import numpy as np
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.feature_extraction import DictVectorizer
 
 # データを読み込む
@@ -26,15 +26,10 @@ x.loc[:, 4:9] = x.loc[:, 4:9].astype(str)
 
 # カテゴリカル変数を数量化
 x = DictVectorizer(sparse=False).fit_transform(x.to_dict('records'))
-    
+
 # SVCで最初の5000個を学習
-for p in ['l1', 'l2']:
-    for d in [True, False]:
-        if p == 'l1' and d == True:
-            continue
-        for c in [1,10,100,1000,10000]:
-            clf = LogisticRegression(penalty=p, dual=d, tol=0.0001, C=c, fit_intercept=True, intercept_scaling=1, class_weight=None, random_state=None)
-            clf.fit(x[:5000], y[:5000])
-            print (p,d,c)
-            # 5000番目以降に対する学習スコア
-            print clf.score(x[5000:], y[5000:])
+clf = GradientBoostingClassifier(loss='deviance', learning_rate=0.1, n_estimators=100, subsample=1.0, min_samples_split=2, min_samples_leaf=1, max_depth=5, init=None, random_state=None, max_features=None, verbose=0, max_leaf_nodes=None, warm_start=False)
+clf.fit(x[:5000], y[:5000])
+
+# 5000番目以降に対する学習スコア
+print clf.score(x[5000:], y[5000:])
