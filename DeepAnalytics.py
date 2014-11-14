@@ -5,7 +5,7 @@ Created on Mon Nov 10 17:16:57 2014
 @author: 
 """
 
-import pandas as pdb
+import pandas as pd
 import numpy as np
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.feature_extraction import DictVectorizer
