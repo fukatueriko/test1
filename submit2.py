@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Nov 14 16:06:56 2014
+Created on Fri Nov 14 18:13:43 2014
 
 @author: 深津恵梨子
 """
@@ -28,9 +28,13 @@ print u'欠損値を埋める'
 inp = Imputer()
 x = inp.fit_transform(x)
 
-print u'学習中'
-clf = GradientBoostingClassifier(loss='deviance', learning_rate=0.1, n_estimators=100, subsample=1.0, min_samples_split=2, min_samples_leaf=1, max_depth=7, init=None, random_state=None, max_features=None, verbose=0, max_leaf_nodes=None, warm_start=False)
-clf.fit(x,y)
+print u'特徴ベクトル生成中'
+gbdt = GradientBoostingClassifier(loss='deviance', learning_rate=0.1, n_estimators=100, subsample=1.0, min_samples_split=2, min_samples_leaf=1, max_depth=7, init=None, random_state=None, max_features=None, verbose=0, max_leaf_nodes=None, warm_start=False)
+gbdt.fit(x,y)
+x_new = gbdt.transform(x)
+
+clf = SVC()
+clf.fit(x_new, y)
 
 print u'テストデータ読み込み中'
 df=pd.read_csv("C:\\Users\\fukazu\\Documents\\IPython Notebooks\\deepanAlytics\\test.csv",header=None)
@@ -46,7 +50,8 @@ print u'欠損値を埋める'
 x = inp.transform(x)
 
 print u'予測中'
-answer = clf.predict(x)
+x_new = gbdt.transform(x)
+answer = clf.predict(x_new)
 
 print u'サブミットファイル生成'
 index = df[0]
