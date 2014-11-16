@@ -21,7 +21,7 @@ y = df[1]
 x.loc[:, 4:9] = x.loc[:, 4:9].astype(str)
 
 print u'数量化中'
-vectorizer = DictVectorizer(sparse=False)
+vectorizer = DictVectorizer(sparse=True)
 x = vectorizer.fit_transform(x.to_dict('records'))
 
 print u'欠損値を埋める'
@@ -30,7 +30,7 @@ x = inp.fit_transform(x)
 
 print u'特徴ベクトル生成中'
 gbdt = GradientBoostingClassifier(loss='deviance', learning_rate=0.1, n_estimators=100, subsample=1.0, min_samples_split=2, min_samples_leaf=1, max_depth=7, init=None, random_state=None, max_features=None, verbose=0, max_leaf_nodes=None, warm_start=False)
-gbdt.fit(x,y)
+gbdt.fit(x,toarray(),y)
 x_new = gbdt.transform(x)
 
 clf = SVC()
